@@ -301,12 +301,8 @@ def get_text_list(list_, last_word=gettext_lazy("or")):
         return ""
     if len(list_) == 1:
         return str(list_[0])
-    return "%s %s %s" % (
-        # Translators: This string is used as a separator between list elements
-        _(", ").join(str(i) for i in list_[:-1]),
-        str(last_word),
-        str(list_[-1]),
-    )
+    # Translators: This string is used as a separator between list elements
+    return f"{_(', ').join(str(i) for i in list_[:-1])} {last_word} {list_[-1]}"
 
 
 @keep_lazy_text
@@ -460,9 +456,9 @@ def unescape_string_literal(s):
         "'ab' c"
     """
     if not s or s[0] not in "\"'" or s[-1] != s[0]:
-        raise ValueError("Not a string literal: %r" % s)
+        raise ValueError(f"Not a string literal: {s!r}")
     quote = s[0]
-    return s[1:-1].replace(r"\%s" % quote, quote).replace(r"\\", "\\")
+    return s[1:-1].replace(fr"\{quote}", quote).replace(r"\\", "\\")
 
 
 @keep_lazy_text
